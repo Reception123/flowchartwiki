@@ -57,22 +57,22 @@ class CheckFchw extends SpecialPage {
         $output .= "<table border='0' cellpadding='0' cellspacing='0'>";
         $dir = dirname(dirname(dirname(__FILE__))) . '/images/flowchartwiki';
         $dircheck = file_exists($dir);
-        $output .= Status($dircheck, wfMsg('checkfchwFolderCreated'), wfMsg('checkfchwFolderCreatedHint'));
+        $output .= Status($dircheck, wfMessage('checkfchwFolderCreated'), wfMessage('checkfchwFolderCreatedHint'));
 
         $dirtouch = false;
         if ($dircheck) {
             $dirtouch = (is_writable($dir));
         }
-        $output .= Status($dirtouch, wfMsg('checkfchwFolderPermissions'), wfMsg('checkfchwFolderPermissionsHint'));
+        $output .= Status($dirtouch, wfMessage('checkfchwFolderPermissions'), wfMesssge('checkfchwFolderPermissionsHint'));
 
         $graphvizpath = isset( $fchw['GraphvizDot']);
-        $output .= Status($graphvizpath, wfMsg('checkfchwGraphVizPath'), wfMsg('checkfchwGraphVizPathHint'));
+        $output .= Status($graphvizpath, wfMessage('checkfchwGraphVizPath'), wfMessage('checkfchwGraphVizPathHint'));
 
         $graphvizexec = false;
         if ($graphvizpath) {
             $graphvizexec = is_executable( $fchw['GraphvizDot']);
         }
-        $output .= Status($graphvizexec, wfMsg('checkfchwGraphVizExec'), wfMsg('checkfchwGraphVizExecHint'));
+        $output .= Status($graphvizexec, wfMessage('checkfchwGraphVizExec'), wfMessage('checkfchwGraphVizExecHint'));
 
         $fchwdb = false;
         $dbr = &wfGetDB(DB_MASTER);
@@ -82,13 +82,13 @@ class CheckFchw extends SpecialPage {
         } catch (Exception $e) {
             $fchwdb = false;
         }
-        $output .= Status($fchwdb, wfMsg('checkfchwDbTables'), wfMsg('checkfchwDbTablesHint'));
+        $output .= Status($fchwdb, wfMessage('checkfchwDbTables'), wfMessage('checkfchwDbTablesHint'));
 
         // REAL GRAPHVIZ TEST
         $execTest = false;
-        $execTestMessage = wfMsg('checkfchwGraphVizExecTestHint1');
+        $execTestMessage = wfMessage('checkfchwGraphVizExecTestHint1');
         if (($dirtouch) && ($dircheck) && ($graphvizpath) && ($graphvizexec) && ($fchwdb)) {
-            $execTestMessage = wfMsg('checkfchwGraphVizExecTestHint2');
+            $execTestMessage = wfMessage('checkfchwGraphVizExecTestHint2');
             global $fchw, $wgUploadPath, $wgUploadDirectory;
             $ImgDirWeb  = "/flowchartwiki/";
             $ImgDir  = str_replace('/', DIRECTORY_SEPARATOR, $ImgDirWeb);
@@ -159,11 +159,11 @@ digraph G { size =\"7,2.4\"; { rank = same; \"Flightbooking\";  }
             }
             $execTest = file_exists($PNGFile);
         }
-        $output .= Status($execTest, wfMsg('checkfchwGraphVizExecTest'), $execTestMessage );
+        $output .= Status($execTest, wfMessage('checkfchwGraphVizExecTest'), $execTestMessage );
 
         // FINAL STATUS
         $output .= "<tr><td colspan='2' style='height: 2px'>&nbsp;</td></tr>";
-        $output .= Status(($dirtouch) && ($dircheck) && ($graphvizpath) && ($graphvizexec) && ($fchwdb) && ($execTest), wfMsg('checkfchwTotal'), "");
+        $output .= Status(($dirtouch) && ($dircheck) && ($graphvizpath) && ($graphvizexec) && ($fchwdb) && ($execTest), wfMessage('checkfchwTotal'), "");
         $output .= "</table>";
 
         $output .= "</td><td style='padding-left: 32px;'>";
